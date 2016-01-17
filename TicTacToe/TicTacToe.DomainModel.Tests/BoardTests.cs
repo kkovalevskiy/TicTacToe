@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using MoreLinq;
 using NUnit.Framework;
 
 namespace TicTacToe.DomainModel.Tests
@@ -78,6 +80,18 @@ namespace TicTacToe.DomainModel.Tests
             var board = CreateLimitedBoard();
 
             Assert.Throws<ArgumentException>(() => board.GetPlayerSymbol(new Position(x, y)));
+        }
+
+        [Test]
+        public void GetBusyCells_ShouldReturnBusyCells()
+        {
+            var board = CreateInifiniteBoard();
+            var positions = new[] {new Position(1, 2), new Position(3, 4), new Position(5, 6)};
+            positions.ForEach(p => board.SetPlayerSymbol(p, PlayerSymbol.Cross));
+
+            var busyCells = board.BusyCells.ToArray();
+            
+            Assert.That(busyCells, Is.EquivalentTo(positions));
         }
 
         private Board CreateInifiniteBoard()

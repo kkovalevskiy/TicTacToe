@@ -47,13 +47,13 @@ namespace TicTacToe.DomainModel
             return null;
         }
 
+        public IEnumerable<Position> BusyCells => _busyCells.Keys;
+
         private void EnsurePositionIsCorrect(Position position)
         {
-            if (Size.HasValue)
-            {
-                Ensure.That(position.X, () => position.X).IsInRange(0, Size.Value.Width - 1);
-                Ensure.That(position.Y, () => position.Y).IsInRange(0, Size.Value.Height - 1);                
-            }
+            if (!Size.HasValue) return;
+            Ensure.That(position.X, () => position.X).IsInRange(0, Size.Value.Width - 1);
+            Ensure.That(position.Y, () => position.Y).IsInRange(0, Size.Value.Height - 1);
         }
     }
 }
