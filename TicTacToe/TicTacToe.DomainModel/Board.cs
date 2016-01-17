@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using EnsureThat;
 
 namespace TicTacToe.DomainModel
@@ -17,15 +16,17 @@ namespace TicTacToe.DomainModel
         {
             Size = size;
         }
-        
+
         public Size? Size { get; }
 
         public bool IsInfinite => !Size.HasValue;
 
+        public IEnumerable<Position> BusyCells => _busyCells.Keys;
+
         public void SetPlayerSymbol(Position position, PlayerSymbol value)
         {
             EnsurePositionIsCorrect(position);
-            
+
             if (_busyCells.ContainsKey(position))
             {
                 throw new InvalidOperationException($"Position {position} is already busy");
@@ -43,11 +44,9 @@ namespace TicTacToe.DomainModel
             {
                 return result;
             }
-            
+
             return null;
         }
-
-        public IEnumerable<Position> BusyCells => _busyCells.Keys;
 
         private void EnsurePositionIsCorrect(Position position)
         {
